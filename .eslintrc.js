@@ -11,6 +11,7 @@ module.exports = {
     jest: true,
     node: true,
     browser: true,
+    es6: true,
   },
 
   extends: [
