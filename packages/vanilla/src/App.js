@@ -1,12 +1,12 @@
 import * as React from "react";
 import TestApp from "@cij-test/shared/components/TestApp";
 
-import Styled from "./views/Styled";
-import CSS from "./views/CSS";
+import VanillaStyle from "./views/VanillaStyle";
+import VanillaCSS from "./views/VanillaCSS";
 
 const TestType = {
-  Styled: "styled",
-  CSS: "css",
+  VanillaCSS: "vanilla-css",
+  VanillaStyle: "vanilla-style",
 };
 
 export default function App() {
@@ -15,8 +15,8 @@ export default function App() {
       {({ type }) => {
         const Cpn =
           {
-            [TestType.Styled]: Styled,
-            [TestType.CSS]: CSS,
+            [TestType.VanillaStyle]: VanillaStyle,
+            [TestType.VanillaCSS]: VanillaCSS,
           }[type] || null;
         return Cpn ? <Cpn /> : null;
       }}

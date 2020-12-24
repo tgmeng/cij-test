@@ -5,10 +5,10 @@ const buildDev = require("@cij-test/shared/webpack/build-dev");
 module.exports = buildDev({
   entry: "./src/index",
   devServer: {
-    port: 3001,
+    port: 3002,
   },
   output: {
-    publicPath: "http://localhost:3001/",
+    publicPath: "http://localhost:3002/",
   },
   module: {
     rules: [
@@ -20,7 +20,7 @@ module.exports = buildDev({
   },
   plugins: [
     new HtmlWebpackPlugin({
-      title: "emotion-10",
+      title: "emotion-11",
     }),
   ],
 });

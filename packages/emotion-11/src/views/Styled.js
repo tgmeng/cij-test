@@ -1,9 +1,7 @@
 import * as React from "react";
-import { Profiler } from "react";
 import styled from "@emotion/styled";
 
 import Control from "@cij-test/shared/components/Control";
-import { commonProfilerCallback } from "@cij-test/shared/utils/profiler";
 
 const Box = styled.div`
   display: inline-block;
@@ -14,10 +12,6 @@ const Box = styled.div`
 
 export default function Styled() {
   return (
-    <Profiler id="EmotionStyled" onRender={commonProfilerCallback}>
-      <Control>
-        {list => list.map((item, index) => <Box key={index} />)}
-      </Control>
-    </Profiler>
+    <Control>{list => list.map((item, index) => <Box key={index} />)}</Control>
   );
 }
