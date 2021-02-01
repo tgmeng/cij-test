@@ -29,6 +29,12 @@
   "dependencies": {
     "ora": "^5.2.0",
     "puppeteer": "^5.5.0",
-    "@cij-test/vanilla-style": "^0.0.0"
+    "@cij-test/vanilla-style": "^0.0.0",
+    "@cij-test/vanilla-css": "^0.0.0",
+    "@cij-test/emotion-10-core-css": "^0.0.0",
+    "@cij-test/emotion-10-styled": "^0.0.0",
+    "@cij-test/emotion-11-css": "^0.0.0",
+    "@cij-test/emotion-11-react-css": "^0.0.0",
+    "@cij-test/emotion-11-styled": "^0.0.0"
   }
 }

@@ -4,7 +4,7 @@ const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
 const buildCommon = require("./build-common");
 
-function buildWebpackProdConfig(config) {
+function buildWebpackProdConfig(...config) {
   return buildCommon(
     merge(
       {
@@ -36,7 +36,7 @@ function buildWebpackProdConfig(config) {
         },
         plugins: [new CleanWebpackPlugin()],
       },
-      config
+      ...config
     )
   );
 }

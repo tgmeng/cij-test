@@ -1,0 +1,13 @@
+.table {
+  display: table;
+}
+
+.table__row {
+  display: table-row;
+}
+
+.table__cell {
+  display: table-cell;
+  padding: 10px;
+  background-color: #f00;
+}

@@ -108,6 +108,7 @@ const log = createLog({ spinner });
         data.push(...profileDataList);
         profileMap.set(baseInfo, data);
 
+        spinner.text = "Closing";
         await page.close();
 
         count++;
@@ -122,27 +123,40 @@ const log = createLog({ spinner });
     spinner.stop();
   }
 
-  const tableRows = [
-    ["Name", "Table Size", "Mount Time (ms)", "Update Time (ms)"],
-  ];
+  const tableSizeGroupMap = new Map();
   for (let [baseInfo, dataList] of profileMap.entries()) {
-    tableRows.push([
-      baseInfo.name,
-      baseInfo.tableSize,
-      calcAverageActualTime(
-        dataList
-          .filter(data => data.phase === "mount")
-          .map(data => data.actualTime)
-      ),
-      calcAverageActualTime(
-        dataList
-          .filter(data => data.phase === "update")
-          .map(data => data.actualTime)
-      ),
-    ]);
+    if (!tableSizeGroupMap.has(baseInfo.tableSize)) {
+      tableSizeGroupMap.set(baseInfo.tableSize, []);
+    }
+    tableSizeGroupMap
+      .get(baseInfo.tableSize)
+      .push([
+        baseInfo.name,
+        calcAverageActualTime(
+          dataList
+            .filter(data => data.phase === "mount")
+            .map(data => data.actualTime)
+        ),
+        calcAverageActualTime(
+          dataList
+            .filter(data => data.phase === "update")
+            .map(data => data.actualTime)
+        ),
+      ]);
   }
 
-  await fs.writeFile(path.join(__dirname, "../RESULT.md"), table(tableRows));
+  const resultContent = [];
+  for (let [tableSize, rows] of tableSizeGroupMap.entries()) {
+    resultContent.push(
+      tableSize,
+      table([["Name", "Mount Time (ms)", "Update Time (ms)"], ...rows])
+    );
+  }
+
+  await fs.writeFile(
+    path.join(__dirname, "../RESULT.md"),
+    resultContent.join("\n\n")
+  );
 
   await browser.close();
   spinner.stop();

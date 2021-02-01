@@ -4,6 +4,8 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const buildProd = require("@cij-test/shared/webpack/build-prod");
 
+const pkg = require("./package.json");
+
 module.exports = buildProd({
   module: {
     rules: [
@@ -14,11 +16,11 @@ module.exports = buildProd({
     ],
   },
   optimization: {
-    minimizer: ['...', new CssMinimizerPlugin()],
+    minimizer: ["...", new CssMinimizerPlugin()],
   },
   plugins: [
     new HtmlWebpackPlugin({
-      title: "vanilla",
+      title: pkg.name,
     }),
     new MiniCssExtractPlugin({
       filename: "[name].[contenthash].css",

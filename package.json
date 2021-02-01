@@ -4,7 +4,9 @@
   "workspaces": [
     "packages/shared",
     "packages/tests",
-    "packages/benchmarks/vanilla-style"
+    "packages/benchmarks/vanilla/*",
+    "packages/benchmarks/emotion-10/*",
+    "packages/benchmarks/emotion-11/*"
   ],
   "scripts": {
     "bootstrap": "lerna bootstrap",

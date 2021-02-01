@@ -1,6 +1,10 @@
 const path = require("path");
 
-exports.TestPackages = ["@cij-test/vanilla-style"].map(id => require(id));
+const pkg = require("../package.json");
+
+exports.TestPackages = Object.keys(pkg.dependencies)
+  .filter(dep => /\@cij-test\//.test(dep))
+  .map(id => require(id));
 
 // exports.RepeatMountTimes = 5;
 exports.RepeatMountTimes = 1;

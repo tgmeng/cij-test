@@ -1,7 +1,7 @@
 const path = require("path");
 const { merge } = require("webpack-merge");
 
-function buildWebpackCommonConfig(config) {
+function buildWebpackCommonConfig(...config) {
   return merge(
     {
       entry: "./src/index",
@@ -21,7 +21,7 @@ function buildWebpackCommonConfig(config) {
         extensions: [".js", ".jsx"],
       },
     },
-    config
+    ...config
   );
 }
 
