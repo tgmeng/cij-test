@@ -2,16 +2,22 @@
   "name": "cij-test",
   "private": true,
   "workspaces": [
-    "packages/*"
+    "packages/shared",
+    "packages/tests",
+    "packages/benchmarks/vanilla-style"
   ],
   "scripts": {
     "bootstrap": "lerna bootstrap",
-    "dev": "lerna run --parallel dev"
+    "build": "lerna run --parallel build",
+    "run-benchmarks": "lerna run test --scope @cij-test/tests"
   },
   "devDependencies": {
     "eslint": "^7.14.0",
     "eslint-plugin-react": "^7.21.5",
     "eslint-plugin-react-hooks": "^4.2.0",
     "lerna": "^3.22.1"
+  },
+  "dependencies": {
+    "serve-handler": "^6.1.3"
   }
 }

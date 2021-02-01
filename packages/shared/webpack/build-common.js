@@ -4,6 +4,7 @@ const { merge } = require("webpack-merge");
 function buildWebpackCommonConfig(config) {
   return merge(
     {
+      entry: "./src/index",
       module: {
         rules: [
           {
