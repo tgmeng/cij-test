@@ -18,7 +18,7 @@ module.exports = buildProd({
   },
   plugins: [
     new HtmlWebpackPlugin({
-      title: "vanilla",
+      title: "vanilla-style",
     }),
     new MiniCssExtractPlugin({
       filename: "[name].[contenthash].css",

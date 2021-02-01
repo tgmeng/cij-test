@@ -13,7 +13,7 @@ module.exports = buildDev({
   },
   plugins: [
     new HtmlWebpackPlugin({
-      title: "vanilla",
+      title: "vanilla-style",
     }),
   ],
 });

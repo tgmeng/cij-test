@@ -16,7 +16,7 @@ const {
   UpdateButtonId,
 } = require("./constants");
 
-const spinner = ora().start();
+const spinner = ora();
 
 const log = createLog({ spinner });
 
@@ -29,8 +29,8 @@ const log = createLog({ spinner });
 
   for (const pkg of TestPackages) {
     spinner.prefixText = pkg.name;
-
     spinner.text = "Building";
+    spinner.start();
 
     await pkg.build();
 
@@ -66,24 +66,38 @@ const log = createLog({ spinner });
         const newURL = new URL(url);
         newURL.searchParams.set("table-size", tableSize);
 
-        await page.evaluateOnNewDocument(() => {
-          window.__profileDataList = [];
-          window.updateButtonId = UpdateButtonId;
-          window.pushProfile = data => {
-            window.__profileDataList.push(data);
-          };
-        });
+        await page.evaluateOnNewDocument(
+          ({ UpdateButtonId, RepeatUpdateTimes }) => {
+            window.__profileDataList = [];
+            window.updateButtonId = UpdateButtonId;
+            window.pushProfile = data => {
+              window.__profileDataList.push(data);
+              if (window.__profileDataList.length <= RepeatUpdateTimes) {
+                setTimeout(() => {
+                  document.getElementById(UpdateButtonId).click();
+                }, 1);
+              }
+            };
+          },
+          {
+            RepeatUpdateTimes,
+            UpdateButtonId,
+          }
+        );
 
         await page.goto(newURL, {
           waitUntil: "networkidle0",
         });
 
-        const profileDataJSHandler = await page.waitForFunction(() =>
-          window.__profileDataList &&
-          // window.__profileDataList.length >= RepeatUpdateTimes
-          window.__profileDataList.length > 0
-            ? window.__profileDataList
-            : false
+        const profileDataJSHandler = await page.waitForFunction(
+          ({ RepeatUpdateTimes }) => {
+            return window.__profileDataList &&
+              window.__profileDataList.length >= 1 + RepeatUpdateTimes
+              ? window.__profileDataList
+              : false;
+          },
+          {},
+          { RepeatUpdateTimes }
         );
 
         const profileDataList = await profileDataJSHandler.evaluate(
@@ -99,16 +113,16 @@ const log = createLog({ spinner });
         count++;
       }
 
-      spinner.stop();
-
       log("DONE", baseInfoStr);
     }
 
     await new Promise(resolve => server.close(resolve));
     port++;
+
+    spinner.stop();
   }
 
-  let tableRows = [
+  const tableRows = [
     ["Name", "Table Size", "Mount Time (ms)", "Update Time (ms)"],
   ];
   for (let [baseInfo, dataList] of profileMap.entries()) {
