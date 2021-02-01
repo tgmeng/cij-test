@@ -148,14 +148,15 @@ const log = createLog({ spinner });
   const resultContent = [];
   for (let [tableSize, rows] of tableSizeGroupMap.entries()) {
     resultContent.push(
-      tableSize,
-      table([["Name", "Mount Time (ms)", "Update Time (ms)"], ...rows])
+      `${tableSize}:`,
+      table([["Name", "Mount Time (ms)", "Update Time (ms)"], ...rows]),
+      "\n"
     );
   }
 
   await fs.writeFile(
     path.join(__dirname, "../RESULT.md"),
-    resultContent.join("\n\n")
+    resultContent.join("\n")
   );
 
   await browser.close();
