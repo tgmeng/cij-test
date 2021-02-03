@@ -7,14 +7,19 @@ const ora = require("ora");
 const handler = require("serve-handler");
 const table = require("markdown-table");
 
-const { createNewPage, createLog, calcAverageActualTime } = require("./utils");
+const { getTestPackages, createNewPage, createLog } = require("./utils");
 const {
-  TestPackages,
   RepeatMountTimes,
   RepeatUpdateTimes,
   TableSizeList,
   UpdateButtonId,
-} = require("./constants");
+} = require("./common/constants");
+
+if (!process.argv[2]) {
+  throw new Error("Need output path");
+}
+
+const outputPath = path.resolve(process.argv[2]);
 
 const spinner = ora();
 
@@ -27,7 +32,7 @@ const log = createLog({ spinner });
 
   let port = 3000;
 
-  for (const pkg of TestPackages) {
+  for (const pkg of getTestPackages()) {
     spinner.prefixText = pkg.name;
     spinner.text = "Building";
     spinner.start();
@@ -51,7 +56,6 @@ const log = createLog({ spinner });
     for (const tableSize of TableSizeList) {
       let baseInfo = {
         name: pkg.name,
-        url,
         tableSize,
       };
 
@@ -108,7 +112,7 @@ const log = createLog({ spinner });
         data.push(...profileDataList);
         profileMap.set(baseInfo, data);
 
-        spinner.text = "Closing";
+        spinner.text = "Closing Page";
         await page.close();
 
         count++;
@@ -117,46 +121,16 @@ const log = createLog({ spinner });
       log("DONE", baseInfoStr);
     }
 
+    spinner.text = "Closing Server";
     await new Promise(resolve => server.close(resolve));
     port++;
 
     spinner.stop();
   }
 
-  const tableSizeGroupMap = new Map();
-  for (let [baseInfo, dataList] of profileMap.entries()) {
-    if (!tableSizeGroupMap.has(baseInfo.tableSize)) {
-      tableSizeGroupMap.set(baseInfo.tableSize, []);
-    }
-    tableSizeGroupMap
-      .get(baseInfo.tableSize)
-      .push([
-        baseInfo.name,
-        calcAverageActualTime(
-          dataList
-            .filter(data => data.phase === "mount")
-            .map(data => data.actualTime)
-        ),
-        calcAverageActualTime(
-          dataList
-            .filter(data => data.phase === "update")
-            .map(data => data.actualTime)
-        ),
-      ]);
-  }
-
-  const resultContent = [];
-  for (let [tableSize, rows] of tableSizeGroupMap.entries()) {
-    resultContent.push(
-      `${tableSize}:`,
-      table([["Name", "Mount Time (ms)", "Update Time (ms)"], ...rows]),
-      "\n"
-    );
-  }
-
   await fs.writeFile(
-    path.join(__dirname, "../RESULT.md"),
-    resultContent.join("\n")
+    outputPath,
+    `module.exports = ${JSON.stringify([...profileMap.entries()], null, 4)}`
   );
 
   await browser.close();

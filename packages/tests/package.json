@@ -21,20 +21,34 @@
     "url": "git+https://github.com/tgmeng/cij-test.git"
   },
   "scripts": {
-    "test": "node ./lib/test.js"
+    "dev": "webpack serve --config ./webpack.config.dev.js",
+    "generate-benchmarks-data": "node ./lib/generate-benchmarks-data.js ./src/data.js",
+    "generate-result-md": "node ./lib/generate-result-md ./src/data.js ./RESULT.md"
   },
   "bugs": {
     "url": "https://github.com/tgmeng/cij-test/issues"
   },
+  "devDependencies": {
+    "@babel/core": "^7.12.9",
+    "@babel/preset-env": "^7.12.7",
+    "@babel/preset-react": "^7.12.7",
+    "babel-loader": "^8.2.2",
+    "html-webpack-plugin": "^4.5.0",
+    "webpack": "^5.9.0",
+    "webpack-cli": "^4.2.0",
+    "webpack-dev-server": "^3.11.0"
+  },
   "dependencies": {
-    "ora": "^5.2.0",
-    "puppeteer": "^5.5.0",
-    "@cij-test/vanilla-style": "^0.0.0",
-    "@cij-test/vanilla-css": "^0.0.0",
     "@cij-test/emotion-10-core-css": "^0.0.0",
     "@cij-test/emotion-10-styled": "^0.0.0",
     "@cij-test/emotion-11-css": "^0.0.0",
     "@cij-test/emotion-11-react-css": "^0.0.0",
-    "@cij-test/emotion-11-styled": "^0.0.0"
+    "@cij-test/emotion-11-styled": "^0.0.0",
+    "@cij-test/vanilla-css": "^0.0.0",
+    "@cij-test/vanilla-style": "^0.0.0",
+    "echarts": "^5.0.1",
+    "markdown-table": "^2.0.0",
+    "ora": "^5.2.0",
+    "puppeteer": "^5.5.0"
   }
 }

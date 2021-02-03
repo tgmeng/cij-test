@@ -8,11 +8,6 @@
     "packages/benchmarks/emotion-10/*",
     "packages/benchmarks/emotion-11/*"
   ],
-  "scripts": {
-    "bootstrap": "lerna bootstrap",
-    "build": "lerna run --parallel build",
-    "run-benchmarks": "lerna run test --scope @cij-test/tests"
-  },
   "devDependencies": {
     "eslint": "^7.14.0",
     "eslint-plugin-react": "^7.21.5",

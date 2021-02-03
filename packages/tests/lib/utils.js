@@ -2,6 +2,13 @@ const path = require("path");
 const http = require("http");
 const handler = require("serve-handler");
 
+const pkg = require("../package.json");
+
+exports.getTestPackages = () =>
+  Object.keys(pkg.dependencies)
+    .filter(dep => /\@cij-test\//.test(dep))
+    .map(id => require(id));
+
 exports.createNewPage = async browser => {
   const page = await browser.newPage();
   if (process.env.NODE_ENV === "development") {
@@ -21,6 +28,3 @@ exports.createLog = ({ spinner }) =>
       spinner.start();
     }
   };
-
-exports.calcAverageActualTime = timeList =>
-  timeList.reduce((result, time) => result + time, 0) / timeList.length;
