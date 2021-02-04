@@ -2,6 +2,8 @@
 
 测试 CSS-in-JS 性能， [数据](./packages/tests/RESULT.md)。
 
+灵感来源: [A-gambit/CSS-IN-JS-Benchmarks](https://github.com/A-gambit/CSS-IN-JS-Benchmarks/blob/master/RESULT.md)。
+
 ## 安装
 
 使用包管理器 [yarn](https://yarnpkg.com/) 来安装依赖。
